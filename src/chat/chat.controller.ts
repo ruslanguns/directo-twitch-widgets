@@ -1,4 +1,11 @@
-import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { ChatService } from './chat.service';
 
 @Controller('chat')
@@ -11,5 +18,15 @@ export class ChatController {
     @Query('take', new ParseIntPipe()) take: number,
   ) {
     return await this.chatService.getAllChats({ skip, take });
+  }
+
+  @Delete('all')
+  async deleteAll() {
+    return this.chatService.deleteAll();
+  }
+
+  @Delete(':chatId')
+  async deleteOne(@Param('chatId') chatId: number) {
+    return this.chatService.deleteOne(chatId);
   }
 }
