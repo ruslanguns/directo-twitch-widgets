@@ -7,7 +7,7 @@ export class TwitchBotService {
   private tmiClient: tmi.Client;
   private clientId = this.config.get<string>('TWITCH_API_CLIENT_ID');
   private tmiPassword = this.config.get<string>('TWITCH_TMI_PASSWORD');
-  private channels = 'rusgunx';
+  private channels = this.config.get<string>('TWITCH_CHANNEL');
 
   constructor(private readonly config: ConfigService) {
     this.setupClient({
