@@ -13,5 +13,8 @@ datasource db {
 model Chat {
   id        Int      @id @default(autoincrement())
   message   String
+  tags      String
+  channel   String
+  userInfo  String?
   createdAt DateTime @default(now())
 }

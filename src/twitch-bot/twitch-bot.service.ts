@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ChatService } from 'src/chat/chat.service';
 import * as tmi from 'tmi.js';
 
 @Injectable()
@@ -9,7 +10,10 @@ export class TwitchBotService {
   private tmiPassword = this.config.get<string>('TWITCH_TMI_PASSWORD');
   private channels = this.config.get<string>('TWITCH_CHANNEL');
 
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    private readonly chatService: ChatService,
+  ) {
     this.setupClient({
       options: { debug: true },
       connection: {
@@ -39,6 +43,12 @@ export class TwitchBotService {
     self: boolean,
   ) {
     if (self) return;
+
+    await this.chatService.createChat({
+      channel,
+      message,
+      tags,
+    });
 
     if (message.toLowerCase() === '!hello') {
       this.tmiClient.say(channel, `@${tags.username}, heya!`);
