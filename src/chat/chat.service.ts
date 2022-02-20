@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { StoreService } from '../store/store.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 type Chat = {
@@ -12,7 +13,10 @@ type PaginateProps = { skip?: number; take?: number };
 
 @Injectable()
 export class ChatService {
-  constructor(private readonly data: PrismaService) {}
+  constructor(
+    private readonly data: PrismaService,
+    private readonly store: StoreService,
+  ) {}
 
   async getAllChats(options: PaginateProps): Promise<Chat[]> {
     const { skip, take } = options;
@@ -52,5 +56,9 @@ export class ChatService {
 
   async deleteAll() {
     return this.data.chat.deleteMany();
+  }
+
+  async getSelectedChat() {
+    return this.store.value.selectedChat;
   }
 }

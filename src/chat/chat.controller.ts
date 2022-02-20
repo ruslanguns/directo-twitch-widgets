@@ -20,6 +20,11 @@ export class ChatController {
     return await this.chatService.getAllChats({ skip, take });
   }
 
+  @Get('selected')
+  getSelectedChat() {
+    return this.chatService.getSelectedChat();
+  }
+
   @Delete('all')
   async deleteAll() {
     return this.chatService.deleteAll();
