@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
+import { AppState } from '../common/interfaces/app-state.interface';
 
 @Injectable()
 export class StoreService {
-  private _store = new BehaviorSubject({
+  private _store = new BehaviorSubject<AppState>({
     selectedChat: null,
   });
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ChatService } from 'src/chat/chat.service';
 import * as tmi from 'tmi.js';
+import { ChatService } from '../chat/chat.service';
 
 @Injectable()
 export class TwitchBotService {
