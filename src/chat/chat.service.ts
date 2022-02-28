@@ -32,7 +32,6 @@ export class ChatService {
 
   async createChat(chat: Chat): Promise<Chat> {
     const userInfo = await this.twitchApi.getUserDetails(chat.tags['username']);
-    console.log(userInfo);
     const data = await this.data.chat.create({
       data: {
         ...chat,

@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import { fetcher } from './helpers/fetcher';
 import ChatItem from './components/ChatItem';
 import useScrolllToBottom from './hooks/useScrolllToBottom';
+import { SERVER_URL } from './contants';
 
 const Chats = () => {
   const { data = [], error } = useSwr(
@@ -21,7 +22,7 @@ const Chats = () => {
   if (error) return <div>failed to load chats</div>;
 
   const handleChatClick = (chat) => {
-    const socket = io('http://localhost:3000');
+    const socket = io(SERVER_URL);
     if (chat && chat.id !== selectedChat?.id) {
       socket.emit('selected-chat', chat);
       setSelectedChat(chat);

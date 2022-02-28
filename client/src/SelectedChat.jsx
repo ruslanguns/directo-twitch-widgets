@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import { SERVER_URL } from './contants';
 import { getMessageHTML } from './helpers/getMessageHTML';
 import './styles/SelectedChat.css';
 
@@ -7,7 +8,7 @@ const SelectedChat = () => {
   const [chat, setChat] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/chat/selected`)
+    fetch(`${SERVER_URL}api/chat/selected`)
       .then((res) => res.json())
       .then((chat) => {
         setChat(chat);
@@ -15,7 +16,7 @@ const SelectedChat = () => {
   }, []);
 
   useEffect(() => {
-    const socket = io('http://localhost:3000');
+    const socket = io(SERVER_URL);
 
     socket.on('selected-chat', (chat) => {
       setChat(chat);

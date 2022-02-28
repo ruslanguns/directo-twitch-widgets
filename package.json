@@ -8,8 +8,8 @@
   "scripts": {
     "postinstall": "prisma generate",
     "prebuild": "rimraf dist",
-    "build:client": "cd client && pnpm i && pnpm build",
-    "build": "nest build && pnpm run build:client",
+    "build:client": "cd client && REACT_APP_SERVER_PORT=4000 pnpm i && pnpm build",
+    "build": "nest build && pnpm build:client",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

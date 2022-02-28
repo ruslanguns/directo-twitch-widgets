@@ -22,7 +22,6 @@ export class TwitchApiService implements OnModuleInit {
   ) {}
 
   async getUserDetails(login: string): Promise<TwitchUserData> {
-    console.log('Estamos pidiendo info del user');
     try {
       const http$ = this.http
         .get<TwitchUsersResponse>('users', { params: { login } })
@@ -35,7 +34,6 @@ export class TwitchApiService implements OnModuleInit {
   }
 
   async getAccessToken() {
-    console.log('Estamos pidiendo un nuevo token');
     try {
       const url = `https://id.twitch.tv/oauth2/token`;
       const http$ = this.http
