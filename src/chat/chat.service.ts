@@ -3,12 +3,14 @@ import { StoreService } from '../store/store.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { Chat } from '../common/interfaces/chat.interface';
 import { PaginateOptions } from '../common/interfaces/pagination.interface';
+import { TwitchApiService } from '../twitch-api/twitch-api.service';
 
 @Injectable()
 export class ChatService {
   constructor(
     private readonly data: PrismaService,
     private readonly store: StoreService,
+    private readonly twitchApi: TwitchApiService,
   ) {}
 
   async getAllChats(options: PaginateOptions): Promise<Chat[]> {
@@ -29,11 +31,13 @@ export class ChatService {
   }
 
   async createChat(chat: Chat): Promise<Chat> {
+    const userInfo = await this.twitchApi.getUserDetails(chat.tags['username']);
+    console.log(userInfo);
     const data = await this.data.chat.create({
       data: {
         ...chat,
         tags: JSON.stringify(chat.tags),
-        userInfo: JSON.stringify(chat.userInfo),
+        userInfo: JSON.stringify(userInfo),
       },
     });
     return {

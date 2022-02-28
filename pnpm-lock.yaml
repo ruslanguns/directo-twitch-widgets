@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@nestjs/axios': ^0.0.6
   '@nestjs/cli': ^8.0.0
   '@nestjs/common': ^8.0.0
   '@nestjs/config': ^1.2.0
@@ -18,6 +19,7 @@ specifiers:
   '@types/tmi.js': ^1.8.1
   '@typescript-eslint/eslint-plugin': ^5.0.0
   '@typescript-eslint/parser': ^5.0.0
+  axios-retry-interceptor: ^1.1.0
   class-transformer: ^0.5.1
   class-validator: ^0.13.2
   eslint: ^8.0.1
@@ -41,6 +43,7 @@ specifiers:
   webpack: ^5.0.0
 
 dependencies:
+  '@nestjs/axios': 0.0.6_9a0e39cada075cf8a453083f94ffa5a6
   '@nestjs/common': 8.3.1_41a73a83cecc93a04fa529b9098e66bd
   '@nestjs/config': 1.2.0_9a0e39cada075cf8a453083f94ffa5a6
   '@nestjs/core': 8.3.1_28b77e3d81913a20993ec384313ab026
@@ -48,6 +51,7 @@ dependencies:
   '@nestjs/platform-socket.io': 8.3.1_e9ccf066fa0d546589baa382d433cfd3
   '@nestjs/websockets': 8.3.1_504f86c03cb7c531eccc5cd75ed4e98c
   '@prisma/client': 3.9.2_prisma@3.9.2
+  axios-retry-interceptor: 1.1.0
   class-transformer: 0.5.1
   class-validator: 0.13.2
   reflect-metadata: 0.1.13
@@ -787,6 +791,21 @@ packages:
       '@jridgewell/resolve-uri': 3.0.5
       '@jridgewell/sourcemap-codec': 1.4.11
     dev: true
+
+  /@nestjs/axios/0.0.6_9a0e39cada075cf8a453083f94ffa5a6:
+    resolution: {integrity: sha512-RgtKUziiEPRtWS3KJNDqq0Epw9ffFdIKAtcj6cXnWeJvgHLwnDkw2rUsmHpDYrhszG+8bc4H8sDygRKwNPPAQA==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0
+      reflect-metadata: ^0.1.12
+      rxjs: ^6.0.0 || ^7.0.0
+    dependencies:
+      '@nestjs/common': 8.3.1_41a73a83cecc93a04fa529b9098e66bd
+      axios: 0.26.0
+      reflect-metadata: 0.1.13
+      rxjs: 7.5.4
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /@nestjs/cli/8.2.1_eslint@8.9.0:
     resolution: {integrity: sha512-GnwpORSIkGl6N6yWPONq1wwZ8+zltr3vF1M/2qzupDnXOAvSSCh1otDQRAmeOf3uIIeCiCsJEEx79kRnT7Zdrw==}
@@ -1715,6 +1734,12 @@ packages:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
     engines: {node: '>= 4.0.0'}
     dev: true
+
+  /axios-retry-interceptor/1.1.0:
+    resolution: {integrity: sha512-v92fl95XaD3KNC9DpTGAzjEvcwbysXjo5g4z4OiVp4Zwi6SlYLVGSQVv50Ze/W6zV47OTd8M1zTFFboJNdEkRg==}
+    dependencies:
+      typy: 2.0.1
+    dev: false
 
   /axios/0.26.0:
     resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
@@ -5238,6 +5263,10 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
+
+  /typy/2.0.1:
+    resolution: {integrity: sha512-XmaoLLk90L1Hq9yoWuh9oIzohATamlIIHm15Uz+8oL8IxyGLczCaGZgVISmaYvUs0UNGt/SVXp5IuojoI2a3cw==}
+    dev: false
 
   /universalify/0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}

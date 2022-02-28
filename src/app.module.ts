@@ -5,6 +5,7 @@ import { ChatModule } from './chat/chat.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StoreModule } from './store/store.module';
 import { EventsModule } from './events/events.module';
+import { TwitchApiModule } from './twitch-api/twitch-api.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { EventsModule } from './events/events.module';
     PrismaModule,
     StoreModule,
     EventsModule,
+    TwitchApiModule,
   ],
 })
 export class AppModule {}
