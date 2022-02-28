@@ -9,6 +9,16 @@
   background-color: bisque;
   margin: 1em;
   padding: 0.5em;
+  box-shadow: 0px 0px 3px 4px rgba(0, 0, 0, 0.267);
+  
+}
+
+.chat-selected {
+  outline: 3px dotted rgb(80, 41, 41);
+}
+
+.chat:hover {
+  cursor: pointer;
 }
 
 .chat__avatar {
@@ -19,10 +29,12 @@
 
 .chat__username {
   grid-area: username;
-  margin-left: 1em;
+  margin-left: 1rem;
+  font-weight: 600;
 }
 
 .chat__message {
   grid-area: message;
-  margin-left: 1em;
+  margin-left: 1rem;
+  font-size: 1.2em;
 }

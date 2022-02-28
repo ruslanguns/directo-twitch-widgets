@@ -9,6 +9,7 @@ specifiers:
   '@nestjs/platform-express': ^8.0.0
   '@nestjs/platform-socket.io': ^8.3.1
   '@nestjs/schematics': ^8.0.0
+  '@nestjs/serve-static': ^2.2.2
   '@nestjs/testing': ^8.0.0
   '@nestjs/websockets': ^8.3.1
   '@prisma/client': ^3.9.2
@@ -49,6 +50,7 @@ dependencies:
   '@nestjs/core': 8.3.1_28b77e3d81913a20993ec384313ab026
   '@nestjs/platform-express': 8.3.1_dc024985ab89eb73339eca509fad8031
   '@nestjs/platform-socket.io': 8.3.1_e9ccf066fa0d546589baa382d433cfd3
+  '@nestjs/serve-static': 2.2.2_dc024985ab89eb73339eca509fad8031
   '@nestjs/websockets': 8.3.1_504f86c03cb7c531eccc5cd75ed4e98c
   '@prisma/client': 3.9.2_prisma@3.9.2
   axios-retry-interceptor: 1.1.0
@@ -983,6 +985,17 @@ packages:
     transitivePeerDependencies:
       - chokidar
     dev: true
+
+  /@nestjs/serve-static/2.2.2_dc024985ab89eb73339eca509fad8031:
+    resolution: {integrity: sha512-3Mr+Q/npS3N7iGoF3Wd6Lj9QcjMGxbNrSqupi5cviM0IKrZ1BHl5qekW95rWYNATAVqoTmjGROAq+nKKpuUagQ==}
+    peerDependencies:
+      '@nestjs/common': ^6.0.0 || ^7.0.0 || ^8.0.0
+      '@nestjs/core': ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      '@nestjs/common': 8.3.1_41a73a83cecc93a04fa529b9098e66bd
+      '@nestjs/core': 8.3.1_28b77e3d81913a20993ec384313ab026
+      path-to-regexp: 0.1.7
+    dev: false
 
   /@nestjs/testing/8.3.1_81bfb54e79f409a20742d878e1eb3272:
     resolution: {integrity: sha512-QZ7WwXYpUpfuyLddFwPSkJOWbpTUCtxvY2P9DjxcEsafmxaCeEURBM0DjaKcSwsTvyg9WIew803zViJO5NklPA==}

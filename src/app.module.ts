@@ -6,10 +6,15 @@ import { PrismaModule } from './prisma/prisma.module';
 import { StoreModule } from './store/store.module';
 import { EventsModule } from './events/events.module';
 import { TwitchApiModule } from './twitch-api/twitch-api.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client', 'dist'),
+    }),
     TwitchBotModule,
     ChatModule,
     PrismaModule,

@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&family=Hubballi&display=swap');
+.selected {
+  display: grid;
+  background-color: rgba(16, 117, 122, 0.9);
+  color: white;
+  padding: 1em;
+  margin: 1em;
+  grid-template-columns: 150px auto;
+  grid-template-rows: 2em 1fr;
+  grid-template-areas:
+    'avatar username'
+    'avatar message';
+  box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.45);
+
+  animation: leftRight 1.25s alternate, fadeIn 1.5s;
+}
+
+.selected__avatar {
+  grid-area: avatar;
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+}
+
+.selected__username {
+  grid-area: username;
+  margin-left: 1rem;
+  line-height: 20px;
+  font-size: 20px;
+  font-family: 'Concert One', cursive;
+}
+
+.selected__username::before {
+  content: '@';
+}
+
+.selected__message {
+  grid-area: message;
+  margin-left: 1rem;
+  align-self: flex-start;
+  font-family: 'Hubballi', cursive;
+  font-size: 2em;
+}

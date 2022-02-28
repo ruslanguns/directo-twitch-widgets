@@ -1,24 +1,38 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useSwr from 'swr';
 import io from 'socket.io-client';
 import { fetcher } from './helpers/fetcher';
 import ChatItem from './components/ChatItem';
+import useScrolllToBottom from './hooks/useScrolllToBottom';
 
 const Chats = () => {
   const { data = [], error } = useSwr(
     `http://localhost:3000/api/chat?skip=0&take=25`,
     fetcher,
+    {
+      refreshInterval: 1000,
+    },
   );
+
+  const [selectedChat, setSelectedChat] = useState(null);
+  const chatRef = useScrolllToBottom(data);
 
   if (error) return <div>failed to load chats</div>;
 
   const handleChatClick = (chat) => {
     const socket = io('http://localhost:3000');
-    socket.emit('selected-chat', chat);
+    if (chat && chat.id !== selectedChat?.id) {
+      socket.emit('selected-chat', chat);
+      setSelectedChat(chat);
+    } else {
+      socket.emit('selected-chat', null);
+      setSelectedChat(null);
+    }
   };
 
   return (
-    <div className="chat-wrapper">
+    <div className="chat-wrapper" ref={chatRef}>
       <h1>Los Chats</h1>
       <ul>
         <li>
@@ -34,14 +48,14 @@ const Chats = () => {
 
       <div>
         {data.map((chat) => (
-          // <li key={chat.id} onClick={() => handleChatClick(chat)}>
-          //   {chat.tags.username}: &nbsp; {chat.message}
-          // </li>
           <ChatItem
+            onClick={() => handleChatClick(chat)}
             key={chat.id}
             avatarUrl={chat.userInfo.profile_image_url}
             username={chat.userInfo['display_name']}
             message={chat.message}
+            emotes={chat.tags.emotes}
+            isSelected={chat.id === selectedChat?.id}
           />
         ))}
       </div>

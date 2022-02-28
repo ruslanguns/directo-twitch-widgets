@@ -1,4 +1,3 @@
-1;
 /**
  * Get message HTML with emogis
  *
@@ -26,7 +25,7 @@ export function getMessageHTML(message, { emotes }) {
 
     stringReplacements.push({
       stringToReplace: stringToReplace,
-      replacement: `<img src="https://static-cdn.jtvnw.net/emoticons/v1/${id}/3.0">`,
+      replacement: `<img width="25px" src="https://static-cdn.jtvnw.net/emoticons/v1/${id}/3.0">`,
     });
   });
 

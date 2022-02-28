@@ -67,6 +67,13 @@ export class TwitchBotService {
       );
     }
 
+    if (message.toLowerCase() === '!twitter') {
+      this.tmiClient.say(
+        channel,
+        `hey @${tags.username}, mi cuenta de 🔵Twitter es @ruslangonzalez > https://twitter.com/ruslangonzalez`,
+      );
+    }
+
     if (message.toLocaleLowerCase().includes('!redes')) {
       this.tmiClient.say(
         channel,
