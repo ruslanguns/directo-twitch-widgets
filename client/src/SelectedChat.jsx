@@ -8,7 +8,7 @@ const SelectedChat = () => {
   const [chat, setChat] = useState(null);
 
   useEffect(() => {
-    fetch(`${SERVER_URL}api/chat/selected`)
+    fetch(`${SERVER_URL}/api/chat/selected`)
       .then((res) => res.json())
       .then((chat) => {
         setChat(chat);

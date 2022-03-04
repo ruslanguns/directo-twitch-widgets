@@ -23,4 +23,10 @@ export class EventsGateway {
   sendConfetti() {
     this.server.emit('confetti');
   }
+
+  @SubscribeMessage('new-question')
+  newQuestion(@MessageBody() chat: Chat) {
+    this.server.emit('new-question', chat);
+    console.log('chat', chat);
+  }
 }

@@ -46,11 +46,18 @@ export class TwitchBotService {
   ) {
     if (self) return;
 
-    await this.chatService.createChat({
+    const newQuestionReward = '741647f8-88e6-412c-836c-1bcdcffc3eb0';
+
+    const chat = await this.chatService.createChat({
       channel,
       message,
       tags,
     });
+
+    if (tags['custom-reward-id'] === newQuestionReward) {
+      console.log('Nueva pregunta de la comunidad');
+      this.events.newQuestion(chat);
+    }
 
     if (message.toLocaleLowerCase().includes('hola')) {
       this.tmiClient.say(

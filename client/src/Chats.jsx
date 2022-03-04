@@ -43,6 +43,9 @@ const Chats = () => {
           <Link to="/widgets/confetti">Confetti</Link>
         </li>
         <li>
+          <Link to="/widgets/new-question">New Question</Link>
+        </li>
+        <li>
           <Link to="/widgets/stars">Stars</Link>
         </li>
       </ul>
