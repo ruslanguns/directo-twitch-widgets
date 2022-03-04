@@ -18,11 +18,11 @@ const Chats = () => {
 
   const [selectedChat, setSelectedChat] = useState(null);
   const chatRef = useScrolllToBottom(data);
+  const [socket] = useState(io(SERVER_URL));
 
   if (error) return <div>failed to load chats</div>;
 
   const handleChatClick = (chat) => {
-    const socket = io(SERVER_URL);
     if (chat && chat.id !== selectedChat?.id) {
       socket.emit('selected-chat', chat);
       setSelectedChat(chat);
@@ -30,6 +30,14 @@ const Chats = () => {
       socket.emit('selected-chat', null);
       setSelectedChat(null);
     }
+  };
+
+  const handleSelectedBackground = (e) => {
+    socket.emit('selected-background', e.target.value);
+  };
+
+  const handleConfetti = () => {
+    socket.emit('confetti');
   };
 
   return (
@@ -46,9 +54,21 @@ const Chats = () => {
           <Link to="/widgets/new-question">New Question</Link>
         </li>
         <li>
-          <Link to="/widgets/stars">Stars</Link>
+          <Link to="/widgets/selected-background">Selected background</Link>
         </li>
       </ul>
+
+      <div onChange={handleSelectedBackground}>
+        <h4>Background seleccionado</h4>
+        <input type="radio" value="none" name="selectedBackground" /> Ninguno
+        <br />
+        <input type="radio" value="stars" name="selectedBackground" /> Stars
+        parallax
+      </div>
+
+      <div>
+        <button onClick={handleConfetti}>Lanzar confetti!</button>
+      </div>
 
       <div>
         {data.map((chat) => (

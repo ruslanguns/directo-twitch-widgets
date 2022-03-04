@@ -20,6 +20,7 @@ export class EventsGateway {
     this.server.emit('selected-chat', chat);
   }
 
+  @SubscribeMessage('confetti')
   sendConfetti() {
     this.server.emit('confetti');
   }
@@ -27,6 +28,10 @@ export class EventsGateway {
   @SubscribeMessage('new-question')
   newQuestion(@MessageBody() chat: Chat) {
     this.server.emit('new-question', chat);
-    console.log('chat', chat);
+  }
+
+  @SubscribeMessage('selected-background')
+  setBackground(@MessageBody() background: string) {
+    this.server.emit('selected-background', background);
   }
 }

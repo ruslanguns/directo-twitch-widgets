@@ -5,6 +5,7 @@ import Chats from './Chats';
 import ConfettiWidget from './Confetti';
 import NewQuestion from './NewQuestion';
 import SelectedChat from './SelectedChat';
+import SetBackgrounWidget from './SetBackgrounWidget';
 import './styles.css';
 
 ReactDOM.render(
@@ -17,7 +18,10 @@ ReactDOM.render(
           path="/widgets/confetti"
           element={<h1>{<ConfettiWidget />}</h1>}
         />
-        <Route path="/widgets/stars" element={<h1>Widget Stars!</h1>} />
+        <Route
+          path="/widgets/selected-background"
+          element={<SetBackgrounWidget />}
+        />
         <Route path="/" element={<Chats />} />
       </Routes>
     </BrowserRouter>
