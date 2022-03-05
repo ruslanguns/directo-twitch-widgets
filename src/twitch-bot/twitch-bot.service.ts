@@ -114,7 +114,7 @@ export class TwitchBotService {
       );
     }
 
-    if (message.includes('!redes')) {
+    if (message.includes('!redes') && this.socialLinks.length) {
       this.tmiClient.say(
         channel,
         `
