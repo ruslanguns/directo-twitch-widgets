@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Secular One
+- Font Author: Copyright 2016 Michal Sahar. All rights reserved.
+- Font Source: http://fonts.gstatic.com/s/secularone/v10/8QINdiTajsj_87rMuMdKypDlMul7LJpK.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

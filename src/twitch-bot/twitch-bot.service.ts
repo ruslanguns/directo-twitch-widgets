@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { EventsGateway } from 'src/events/events.gateway';
 import * as tmi from 'tmi.js';
 import { ChatService } from '../chat/chat.service';
+import { SocialLink } from '../common/interfaces';
+import { EventsGateway } from '../events/events.gateway';
 
 @Injectable()
 export class TwitchBotService {
@@ -10,12 +11,24 @@ export class TwitchBotService {
   private clientId = this.config.get<string>('TWITCH_API_CLIENT_ID');
   private tmiPassword = this.config.get<string>('TWITCH_TMI_PASSWORD');
   private channels = this.config.get<string>('TWITCH_CHANNEL');
+  private socialLinks: SocialLink[] = [];
 
   constructor(
     private readonly config: ConfigService,
     private readonly chatService: ChatService,
     private readonly events: EventsGateway,
   ) {
+    this.socialLinks = Object.keys(process.env)
+      .filter((s) => s.startsWith('SOCIAL_LINK_'))
+      .map((social) => {
+        const name = social.split('SOCIAL_LINK_')[1].toLowerCase();
+        return {
+          name: name.charAt(0).toUpperCase() + name.slice(1),
+          command: `!${name}`,
+          url: process.env[social],
+        };
+      });
+
     this.setupClient({
       options: { debug: true },
       connection: {
@@ -35,110 +48,94 @@ export class TwitchBotService {
 
     this.tmiClient.connect();
 
-    this.tmiClient.on('message', async (...args) => this.onMessage(...args));
+    this.tmiClient.on('action', (...args) => this.handleActions(...args));
+
+    this.tmiClient.on(
+      'message',
+      async (...args) => await this.handleChats(...args),
+    );
   }
 
-  private async onMessage(
+  private handleActions(
     channel: string,
-    tags: Record<string, any>,
+    state: tmi.ChatUserstate,
     message: string,
     self: boolean,
   ) {
     if (self) return;
 
-    const newQuestionReward = '741647f8-88e6-412c-836c-1bcdcffc3eb0';
+    message = message.toLowerCase();
+
+    console.log('Action', message);
+  }
+
+  private async handleChats(
+    channel: string,
+    state: tmi.ChatUserstate,
+    message: string,
+    self: boolean,
+  ) {
+    if (self) return;
 
     const chat = await this.chatService.createChat({
       channel,
       message,
-      tags,
+      tags: state,
     });
 
-    if (tags['custom-reward-id'] === newQuestionReward) {
+    message = message.toLowerCase();
+
+    const newQuestionReward = this.config.get<string>('REWARD_ID_NEW_QUESTION');
+
+    if (newQuestionReward && state['custom-reward-id'] === newQuestionReward) {
       console.log('Nueva pregunta de la comunidad');
       this.events.newQuestion(chat);
     }
 
-    if (message.toLocaleLowerCase().includes('hola')) {
+    if (message.includes('hola')) {
       this.tmiClient.say(
         channel,
-        `¡Holaaaa! @${tags.username}, 🤗 🤗, ¿Cómo estás?`,
+        `¡Holaaaa! @${state.username}, 🤗 🤗, ¿Cómo estás?`,
       );
     }
 
-    if (message.toLowerCase() === '!bot-saluda') {
-      this.tmiClient.say(channel, `Hola @${tags.username}, soy un bot`);
+    if (message === '!bot-saluda') {
+      this.tmiClient.say(channel, `Hola @${state.username}, soy un bot`);
     }
 
-    if (message.toLowerCase() === '!confetti') {
+    if (message.includes('!confetti')) {
       this.events.sendConfetti();
     }
 
-    if (message.toLowerCase() === '!jugar') {
+    if (message === '!jugar') {
       this.tmiClient.say(
         channel,
-        `@${tags.username}, lo siento de momento no tengo ningún juego instalado!`,
+        `@${state.username}, lo siento de momento no tengo ningún juego instalado!`,
       );
     }
 
-    if (message.toLocaleLowerCase().includes('!redes')) {
+    if (message.includes('!redes')) {
       this.tmiClient.say(
         channel,
         `
-          Por aquí las redes sociales de RusGunx ❤️, 
-          pero tambien puedes invocarlas individualmente 
-          con los comandos: !github, !twitter, !twitch, !linkedkin, !youtube 
+          Por aquí tienes mis redes sociales ❤️: ${this.socialLinks.map(
+            (social) => social.command + ' ',
+          )}
         `,
       );
-      this.tmiClient.say(channel, `🖤 GitHub: https://github.com/ruslanguns`);
-      this.tmiClient.say(
-        channel,
-        `💜 Twitter: https://twitter.com/ruslangonzalez`,
-      );
-      this.tmiClient.say(channel, `💜 Twitch: https://twitch.tv/rusgunx`);
-      this.tmiClient.say(
-        channel,
-        `🤍 LinkedIn: https://linkedin.com/in/ruslangonzalezb`,
-      );
-      this.tmiClient.say(
-        channel,
-        `🔴 Youtube: https://www.youtube.com/ruslangonzalez`,
-      );
+
+      this.socialLinks.forEach((socialLink) => {
+        this.tmiClient.say(channel, `${socialLink.name}: ${socialLink.url}`);
+      });
     }
 
-    if (message.toLowerCase() === '!github') {
-      this.tmiClient.say(
-        channel,
-        `@${tags.username}, mi cuenta de 🖤 GitHub: https://github.com/ruslanguns`,
-      );
-    }
-
-    if (message.toLowerCase() === '!twitter') {
-      this.tmiClient.say(
-        channel,
-        `@${tags.username}, mi cuenta de 🔵Twitter es @ruslangonzalez > https://twitter.com/ruslangonzalez`,
-      );
-    }
-
-    if (message.toLowerCase() === '!twitch') {
-      this.tmiClient.say(
-        channel,
-        `@${tags.username}, mi cuenta de 💜 Twitch es @RusGunx > https://twitch.tv/rusgunx`,
-      );
-    }
-
-    if (message.toLowerCase() === '!linkedkin') {
-      this.tmiClient.say(
-        channel,
-        `@${tags.username}, mi cuenta de 🤍 LinkedIn es /in/ruslangonzalezb > https://linkedin.com/in/ruslangonzalezb`,
-      );
-    }
-
-    if (message.toLowerCase() === '!youtube') {
-      this.tmiClient.say(
-        channel,
-        `@${tags.username}, mi cuenta de 💘 Youtube es @ruslangonzalez > https://www.youtube.com/ruslangonzalez`,
-      );
-    }
+    this.socialLinks.forEach((socialLink) => {
+      if (message.includes(socialLink.command)) {
+        this.tmiClient.say(
+          channel,
+          `Hey! @${state.username}, mi cuenta de 🤟✍ ${socialLink.name} es: ${socialLink.url}`,
+        );
+      }
+    });
   }
 }

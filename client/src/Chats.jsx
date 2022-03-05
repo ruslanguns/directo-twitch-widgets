@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useSwr from 'swr';
-import io from 'socket.io-client';
-import { fetcher } from './helpers/fetcher';
 import ChatItem from './components/ChatItem';
+import Settings from './Settings';
+import { fetcher } from './helpers/fetcher';
 import useScrolllToBottom from './hooks/useScrolllToBottom';
-import { SERVER_URL } from './contants';
+import useSocketServer from './hooks/useSocketServer';
 
 const Chats = () => {
+  const socket = useSocketServer();
   const { data = [], error } = useSwr(
     `http://localhost:3000/api/chat?skip=0&take=25`,
     fetcher,
@@ -17,8 +18,9 @@ const Chats = () => {
   );
 
   const [selectedChat, setSelectedChat] = useState(null);
+  const [openSettings, setOpenSettings] = useState(false);
+
   const chatRef = useScrolllToBottom(data);
-  const [socket] = useState(io(SERVER_URL));
 
   if (error) return <div>failed to load chats</div>;
 
@@ -32,58 +34,59 @@ const Chats = () => {
     }
   };
 
-  const handleSelectedBackground = (e) => {
-    socket.emit('selected-background', e.target.value);
-  };
-
-  const handleConfetti = () => {
-    socket.emit('confetti');
-  };
-
   return (
-    <div className="chat-wrapper" ref={chatRef}>
-      <h1>Los Chats</h1>
-      <ul>
-        <li>
-          <Link to="/widgets/selected-chat">SelectedChat</Link>
-        </li>
-        <li>
-          <Link to="/widgets/confetti">Confetti</Link>
-        </li>
-        <li>
-          <Link to="/widgets/new-question">New Question</Link>
-        </li>
-        <li>
-          <Link to="/widgets/selected-background">Selected background</Link>
-        </li>
-      </ul>
+    <main className="container">
+      <div className="grid">
+        <aside>
+          <ul>
+            <li>
+              <strong>Pantalla princpal</strong>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/widgets/selected-chat">SelectedChat</Link>
+            </li>
+            <li>
+              <Link to="/widgets/confetti">Confetti</Link>
+            </li>
+            <li>
+              <Link to="/widgets/new-question">New Question</Link>
+            </li>
+            <li>
+              <Link to="/widgets/selected-background">Selected background</Link>
+            </li>
+            <li>
+              <Link to="/widgets/detect-browser">Detect browser</Link>
+            </li>
+            <a
+              href="#"
+              role="button"
+              className="contrast outline"
+              onClick={() => setOpenSettings(!openSettings)}
+            >
+              Open settings
+            </a>
+          </ul>
+        </aside>
 
-      <div onChange={handleSelectedBackground}>
-        <h4>Background seleccionado</h4>
-        <input type="radio" value="none" name="selectedBackground" /> Ninguno
-        <br />
-        <input type="radio" value="stars" name="selectedBackground" /> Stars
-        parallax
-      </div>
+        <Settings open={openSettings} setOpenSettings={setOpenSettings} />
 
-      <div>
-        <button onClick={handleConfetti}>Lanzar confetti!</button>
+        <figure className="chats-container" ref={chatRef}>
+          {data.map((chat) => (
+            <ChatItem
+              onClick={() => handleChatClick(chat)}
+              key={chat.id}
+              avatarUrl={chat.userInfo.profile_image_url}
+              username={chat.userInfo['display_name']}
+              message={chat.message}
+              emotes={chat.tags.emotes}
+              isSelected={chat.id === selectedChat?.id}
+            />
+          ))}
+        </figure>
       </div>
-
-      <div>
-        {data.map((chat) => (
-          <ChatItem
-            onClick={() => handleChatClick(chat)}
-            key={chat.id}
-            avatarUrl={chat.userInfo.profile_image_url}
-            username={chat.userInfo['display_name']}
-            message={chat.message}
-            emotes={chat.tags.emotes}
-            isSelected={chat.id === selectedChat?.id}
-          />
-        ))}
-      </div>
-    </div>
+    </main>
   );
 };
 export default Chats;

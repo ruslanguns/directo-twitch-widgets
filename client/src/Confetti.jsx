@@ -7,7 +7,7 @@ import './styles/Confetti.css';
 const ConfettiWidget = () => {
   const [active, setActive] = useState(false);
   const [confettiSound] = useState(
-    new Audio('/assets/audio/confetti_sound.mp3'),
+    new Audio('/assets/audio/confetti_sound2.mp3'),
   );
 
   const handleConfetti = () => {
@@ -20,6 +20,7 @@ const ConfettiWidget = () => {
     }, 500);
 
     setTimeout(() => {
+      confettiSound.volume = 0.2;
       confettiSound.play();
       clearInterval(interval$);
     }, 3001);

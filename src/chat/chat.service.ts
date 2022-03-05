@@ -55,7 +55,9 @@ export class ChatService {
   }
 
   async getSelectedChat() {
-    return this.store.value.selectedChat;
+    return {
+      data: this.store.value.selectedChat,
+    };
   }
 
   async setSelectedChat(chat: Chat) {

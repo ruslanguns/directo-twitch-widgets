@@ -10,21 +10,17 @@ const SelectedChat = () => {
   useEffect(() => {
     fetch(`${SERVER_URL}/api/chat/selected`)
       .then((res) => res.json())
-      .then((chat) => {
-        setChat(chat);
+      .then(({ data }) => {
+        setChat(data);
       });
   }, []);
 
   useEffect(() => {
     const socket = io(SERVER_URL);
 
-    socket.on('selected-chat', (chat) => {
-      setChat(chat);
+    socket.on('selected-chat', (_chat) => {
+      setChat(_chat);
     });
-
-    return () => {
-      socket.off('selected-chat');
-    };
   }, []);
 
   if (!chat) return null;

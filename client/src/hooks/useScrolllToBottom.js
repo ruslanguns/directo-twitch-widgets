@@ -9,7 +9,9 @@ const useScrolllToBottom = (data) => {
   const ref = useRef(null);
 
   const scrollToBottom = () => {
-    ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    const scroll = ref.current.scrollHeight - ref.current.clientHeight;
+    ref.current.scrollTo({ top: scroll, left: 0, behavior: 'smooth' });
   };
 
   useEffect(scrollToBottom, [data]);

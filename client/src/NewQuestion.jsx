@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import { SERVER_URL } from './contants';
 import { getMessageHTML } from './helpers/getMessageHTML';
+import useSocketServer from './hooks/useSocketServer';
 import './styles/NewQuestion.css';
 
 const NewQuestion = () => {
@@ -10,34 +9,14 @@ const NewQuestion = () => {
     new Audio('/assets/audio/notification_alert1.mp3'),
   );
 
-  useEffect(() => {
-    fetch(`${SERVER_URL}/api/chat/selected`)
-      .then((res) => {
-        if (res) {
-          return res.json();
-        }
-      })
-      .then((chat) => {
-        setChat(chat);
-      });
-  }, []);
+  const socket = useSocketServer();
 
   useEffect(() => {
-    if (chat) {
-      setTimeout(() => {
-        notification.play();
-      }, 300);
-    }
-  }, [chat]);
-
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-
     socket.on('new-question', (chat) => {
       setChat(chat);
       if (chat) {
+        notification.play();
         setTimeout(() => {
-          console.log('Se esta quitando');
           socket.emit('new-question', null);
         }, 15000);
       }
