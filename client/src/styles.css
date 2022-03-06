@@ -108,3 +108,12 @@ pre {
     opacity: 1;
   }
 }
+
+@keyframes shake {
+  0% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}

@@ -6,11 +6,12 @@ import Settings from './Settings';
 import { fetcher } from './helpers/fetcher';
 import useScrolllToBottom from './hooks/useScrolllToBottom';
 import useSocketServer from './hooks/useSocketServer';
+import { SERVER_URL } from './contants';
 
 const Chats = () => {
   const socket = useSocketServer();
   const { data = [], error } = useSwr(
-    `http://localhost:3000/api/chat?skip=0&take=25`,
+    `${SERVER_URL}/api/chat?skip=0&take=25`,
     fetcher,
     {
       refreshInterval: 1000,
@@ -49,6 +50,9 @@ const Chats = () => {
             </li>
             <li>
               <Link to="/widgets/confetti">Confetti</Link>
+            </li>
+            <li>
+              <Link to="/widgets/hydrate">Hydrate</Link>
             </li>
             <li>
               <Link to="/widgets/new-question">New Question</Link>

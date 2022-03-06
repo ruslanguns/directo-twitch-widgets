@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as tmi from 'tmi.js';
 import { ChatService } from '../chat/chat.service';
@@ -48,6 +48,15 @@ export class TwitchBotService {
 
     this.tmiClient.connect();
 
+    this.tmiClient.on('redeem', (...args) => {
+      Logger.log({
+        channel: args[0],
+        user: args[1],
+        rewardId: args[2],
+        // state: args[3]
+      });
+    });
+
     this.tmiClient.on('action', (...args) => this.handleActions(...args));
 
     this.tmiClient.on(
@@ -66,7 +75,9 @@ export class TwitchBotService {
 
     message = message.toLowerCase();
 
-    console.log('Action', message);
+    console.log('Action', {
+      state,
+    });
   }
 
   private async handleChats(
@@ -77,6 +88,12 @@ export class TwitchBotService {
   ) {
     if (self) return;
 
+    const username = state['display-name'];
+
+    console.log('Action', {
+      state,
+    });
+
     const chat = await this.chatService.createChat({
       channel,
       message,
@@ -86,10 +103,14 @@ export class TwitchBotService {
     message = message.toLowerCase();
 
     const newQuestionReward = this.config.get<string>('REWARD_ID_NEW_QUESTION');
-
     if (newQuestionReward && state['custom-reward-id'] === newQuestionReward) {
       console.log('Nueva pregunta de la comunidad');
       this.events.newQuestion(chat);
+    }
+
+    const hidrateReward = this.config.get<string>('REWARD_ID_HYDRATE');
+    if (hidrateReward && state['custom-reward-id'] === hidrateReward) {
+      this.events.hydrate(username);
     }
 
     if (message.includes('hola')) {

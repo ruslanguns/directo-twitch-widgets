@@ -34,4 +34,8 @@ export class EventsGateway {
   setBackground(@MessageBody() background: string) {
     this.server.emit('selected-background', background);
   }
+
+  hydrate(@MessageBody() user: string) {
+    this.server.emit('hydrate', user);
+  }
 }
