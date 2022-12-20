@@ -124,7 +124,7 @@ export class TwitchBotService {
       this.tmiClient.say(channel, `Hola @${state.username}, soy un bot`);
     }
 
-    if (message.includes('!confetti')) {
+    if (message.includes('!confetti') || message.includes('!c') || message.includes('!yeah')) {
       this.events.sendConfetti();
     }
 
