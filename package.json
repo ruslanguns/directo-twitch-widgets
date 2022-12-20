@@ -14,7 +14,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
-    "start": "pnpm run migrate:dev && est start",
+    "start": "pnpm run migrate:dev && nest start",
     "start:dev": "pnpm run migrate:dev && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "pnpm run migrate:deploy && node dist/main",
