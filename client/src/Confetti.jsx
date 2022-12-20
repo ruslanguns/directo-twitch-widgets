@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Confetti from 'react-dom-confetti';
 import io from 'socket.io-client';
 import { SERVER_URL } from './contants';
@@ -6,24 +6,22 @@ import './styles/Confetti.css';
 
 const ConfettiWidget = () => {
   const [active, setActive] = useState(false);
-  const [confettiSound] = useState(
-    new Audio('/assets/audio/confetti_sound2.mp3'),
-  );
+  const confettiSound = useRef(new Audio('/assets/audio/confetti_sound2.mp3'));
 
   const handleConfetti = () => {
-    const interval$ = setInterval(() => {
-      confettiSound.play();
+    const timer$ = setInterval(() => {
       setActive(true);
+
+      confettiSound.current.play();
+
       setTimeout(() => {
         setActive(false);
-      }, 500);
-    }, 500);
+      }, 1000);
+    }, 1100);
 
     setTimeout(() => {
-      confettiSound.volume = 0.2;
-      confettiSound.play();
-      clearInterval(interval$);
-    }, 3001);
+      clearInterval(timer$);
+    }, 3500);
   };
 
   useEffect(() => {
