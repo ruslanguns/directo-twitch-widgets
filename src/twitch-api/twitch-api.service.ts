@@ -2,12 +2,10 @@ import { HttpService } from '@nestjs/axios';
 import { BadGatewayException, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as axiosRetryInterceptor from 'axios-retry-interceptor';
-import { map, tap } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import {
-  TwitchTokenResponse,
-  TwitchUsersResponse,
-  TwitchUserData,
+  TwitchTokenResponse, TwitchUserData, TwitchUsersResponse
 } from '../common/interfaces';
 
 @Injectable()
@@ -19,7 +17,7 @@ export class TwitchApiService implements OnModuleInit {
   constructor(
     private readonly http: HttpService,
     private readonly config: ConfigService,
-  ) {}
+  ) { }
 
   async getUserDetails(login: string): Promise<TwitchUserData> {
     try {
@@ -29,6 +27,7 @@ export class TwitchApiService implements OnModuleInit {
 
       return await lastValueFrom(http$);
     } catch (error) {
+      console.log(error)
       throw new BadGatewayException(error.message);
     }
   }
@@ -75,14 +74,14 @@ export class TwitchApiService implements OnModuleInit {
     this.http.axiosRef.interceptors.response.use(
       (response) => response,
       async (error) => {
-        if (error.response?.status === 401) {
+        if (error.response.status === 401) {
           const accessToken = await this.getAccessToken();
 
           error.config.headers.Authorization = `Bearer ${accessToken}`;
 
           return this.http.axiosRef(error.config);
         }
-        return Promise.reject(error.response);
+        return Promise.reject(error);
       },
     );
   }

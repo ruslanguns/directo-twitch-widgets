@@ -140,8 +140,8 @@ export class TwitchBotService {
         channel,
         `
           Por aquí tienes mis redes sociales ❤️: ${this.socialLinks.map(
-            (social) => social.command + ' ',
-          )}
+          (social) => social.command + ' ',
+        )}
         `,
       );
 
