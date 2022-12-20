@@ -6,26 +6,28 @@ This application is built on top of [Nest](https://github.com/nestjs/nest) frame
 
 ## Available Twitch chat commands
 
-| Command       | Description                          |
-| ------------- | ------------------------------------ |
-| `hola`        | When it finds hello in the message   |
-| `!bot-saluda` | Bot send a message to who call it    |
-| `!confetti`   | Send confetti, ideal for celebration |
-| `!redes`      | Share social networks                |
-| `!github`     | Share github                         |
-| `!twitter`    | Share twitter                        |
-| `!twitch`     | Share twitch                         |
-| `!linkedin`   | Share Linkedin                       |
+| Command                  | Description                          |
+| ------------------------ | ------------------------------------ |
+| `hola`                   | When it finds hello in the message   |
+| `!bot-saluda`            | Bot send a message to who call it    |
+| `!confetti \|!c \|!yeah` | Send confetti, ideal for celebration |
+| `!redes`                 | Share social networks                |
+| `!github`                | Share github                         |
+| `!twitter`               | Share twitter                        |
+| `!twitch`                | Share twitch                         |
+| `!linkedin`              | Share Linkedin                       |
 
 ## Widgets available
 
 > **Note:** I am assuming you're running server on port 3000.
 
-|    Widget     |                Description                 |
-| :-----------: | :----------------------------------------: |
-|     Chat      |           http://localhost:3000            |
-| Selected Chat | http://localhost:3000/widget/selected-chat |
-|   Confetti    |   http://localhost:3000/widget/confetti    |
+|     Widget      |                    Description                    |
+| :-------------: | :-----------------------------------------------: |
+|      Chat       |               http://localhost:3000               |
+|  Selected Chat  |    http://localhost:3000/widget/selected-chat     |
+|    Confetti     |       http://localhost:3000/widget/confetti       |
+|     Hydrate     |       http://localhost:3001/widgets/hydrate       |
+| Star Background | http://localhost:3001/widgets/selected-background |
 
 ## API Endpoints
 
@@ -66,23 +68,20 @@ $ pnpm install && cd client && pnpm install
 ## Build client & server
 
 ```bash
-$ pnpm run build
+$ pnpm build
 ```
 
-## Running the app
+## Running it
 
 ```bash
-# development the server
-$ pnpm run start
+# Development mode (server)
+$ pnpm start:dev
 
-# watch mode & development the client
-$ cd client && pnpm run dev
+# Development mode (client)
+$ cd client && pnpm dev
 
-# watch mode server
-$ pnpm run start:dev
-
-# production mode (client & server)
-$ pnpm run start:prod
+# Production mode (client & server)
+$ pnpm start:prod
 ```
 
 ## Stay in touch
